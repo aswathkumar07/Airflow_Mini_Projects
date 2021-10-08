@@ -26,9 +26,12 @@ def analyze_file(stock_ticker, log_dir):
                     error_list.append(ln)
 
     error_count = len(error_list)
-    print(f'Total number of errors: {error_count}\nHere are all the errors:')
-    for error in error_list:
-        print(error)
+    #Printing total number of errors
+    print(f'Total number of errors: {error_count}')
+    #Printing the list of errors in case count is greater than zero
+    if error_count > 0:
+        for error in error_list:
+            print(error)
 
 #Setting default arguments for dag
 default_args = {
@@ -42,7 +45,7 @@ default_args = {
 }
 
 #Writing DAG initialization
-with DAG('log_analyzer', default_args=default_args, schedule_interval='5 3 * * 1-5', description = 'Log of errors in marketvol dag') as dag:
+with DAG('log_analyzer', default_args=default_args, schedule_interval='30 3 * * 1-5', description = 'Log of errors in marketvol dag') as dag:
     t1 = PythonOperator(
         task_id = 'AAPL_log_errors',
         python_callable=analyze_file,
